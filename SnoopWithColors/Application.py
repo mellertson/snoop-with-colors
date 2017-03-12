@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import sys
-import time
 import socket
 import subprocess
 
@@ -80,3 +79,4 @@ if __name__ == "__main__":
     app = Application(color1=args[0], color2=args[1])
     app.run()
         
+# TODO: Add capability to install using 'pip install snoop_with_colors'
