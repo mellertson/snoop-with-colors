@@ -6,7 +6,7 @@ on the command line by the user.
 <BR>
 
 **Usage**<BR>
-python Application.py <inbound_color_code> <outbound_color_code>
+python Application.py <<inbound_color_code>> <outbound_color_code>
 
 **Example**<BR>
 The following example will colorize output from 'tcpdump' with outbound
