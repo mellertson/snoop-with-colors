@@ -24,6 +24,6 @@ can be specified as either of the command line arguments
 ![Image of foreground colors](https://raw.githubusercontent.com/mellertson/snoop_with_colors/master/foreground-colors.png)
 
 <BR>
-For a full list of foreground, background and other color codes, I highly recommend
+Note: For a full list of foreground, background and other color codes, I highly recommend
 [Flozz' MISC >> bash:tip_colors_and_formatting](http://misc.flogisoft.com/bash/tip_colors_and_formatting).
 
