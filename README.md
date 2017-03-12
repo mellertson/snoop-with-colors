@@ -25,6 +25,8 @@ color codes here. For a full list I highly recommend
 <BR>
 **Foreground Color Codes** <BR>
 The following are just a few color codes to get your started.
+
+
 <p>30<span style="color:black"> will output a line using black text</span></p>
 <p>31<span style="color:red"> will output a line using red text</span></p>
 <p>32<span style="color:green"> will output a line using green text</span></p>
