@@ -1,9 +1,25 @@
 #!/usr/bin/python
 
 import sys
+import socket
 from subprocess import Popen, PIPE
 
 class Application(object):
+    default_color1 = 31
+    default_color2 = 32
+    def __init__(self, color1=31, color2=32):
+        hostname = self.getHostname()
+        self.cmds = [
+            ["tcpdump", "-i", "any"],
+            ["GREP_COLORS='sl={}:mt={}'".format(color1, color1), "egrep", "-i", "> {}".format(hostname), "--line-buffered", "-B20"],
+            ["GREP_COLORS='sl={}:mt={}'".format(color2, color2), "egrep", "-i", "> {}".format(hostname), "--line-buffered", "-B20"]
+        ]
+    def getHostname(self):
+        """
+        Gets the system's host name.
+        :return hostname: as a string
+        """
+        return str(socket.gethostname())
     def parseArgs(self):
         """
         Parse command line aguments into a dictionary and return it
@@ -20,11 +36,9 @@ class Application(object):
         args = self.parseArgs()
         
         # color code for outbound communications
-        cmds = [
-            ["tcpdump", "-i", "any"],
-            ["GREP_COLORS='sl=31:mt=31'", "egrep", "-i", "> CodeHammer" "--line-buffered" "-B20"],
-            ["GREP_COLORS='sl=31:mt=31'", "egrep", "-i", "> CodeHammer" "--line-buffered" "-B20"]
-        ]
+        
+    
+        
     
     # tcpdump -i any | GREP_COLORS="\"$ICOLORS\"" egrep -i '> CodeHammer' --line-buffered -B20 | GREP_COLORS="\"$OCOLORS\"" egrep -i 'IP CodeHammer' --line-buffered -B20
     # echo "command is: $OUTPUT"

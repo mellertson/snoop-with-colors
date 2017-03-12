@@ -1,10 +1,76 @@
 import unittest
 import sys
-from SnoopWithColors.Application import Application
+from SnoopWithColors.Application import Application as App
 
-class TestCase_parseArgs(unittest.TestCase):
+class init_TestCase(unittest.TestCase):
+	"""
+	Test case for SnoopWithColors.Application.__init__() method
+	"""
 	def setUp(self):
-		self.app = Application()
+		self.app = App()
+	def test_default_return_values(self):
+		hostname = self.app.getHostname()
+		
+		# verify values in command 1
+		cmd = self.app.cmds[0]
+		self.assertEqual(cmd[0], "tcpdump")
+		self.assertEqual(cmd[1], "-i")
+		self.assertEqual(cmd[2], "any")
+		
+		# verify values in command 2
+		cmd = self.app.cmds[1]
+		self.assertEqual(cmd[0], "GREP_COLORS='sl={}:mt={}'".format(App.default_color1, App.default_color1))
+		self.assertEqual(cmd[1], "egrep")
+		self.assertEqual(cmd[2], "-i")
+		self.assertEqual(cmd[3], "> {}".format(hostname))
+		self.assertEqual(cmd[4], "--line-buffered")
+		self.assertEqual(cmd[5], "-B20")
+		
+		# verify values in command 3
+		cmd = self.app.cmds[2]
+		self.assertEqual(cmd[0], "GREP_COLORS='sl={}:mt={}'".format(App.default_color2, App.default_color2))
+		self.assertEqual(cmd[1], "egrep")
+		self.assertEqual(cmd[2], "-i")
+		self.assertEqual(cmd[3], "> {}".format(hostname))
+		self.assertEqual(cmd[4], "--line-buffered")
+		self.assertEqual(cmd[5], "-B20")
+	def test_default_return_values(self):
+		hostname = self.app.getHostname()
+		app = App(32, 33)
+		# verify values in command 2
+		cmd = app.cmds[1]
+		self.assertEqual(cmd[0], "GREP_COLORS='sl={}:mt={}'".format(32, 32))
+		self.assertEqual(cmd[1], "egrep")
+		self.assertEqual(cmd[2], "-i")
+		self.assertEqual(cmd[3], "> {}".format(hostname))
+		self.assertEqual(cmd[4], "--line-buffered")
+		self.assertEqual(cmd[5], "-B20")
+		
+		# verify values in command 3
+		cmd = app.cmds[2]
+		self.assertEqual(cmd[0], "GREP_COLORS='sl={}:mt={}'".format(33, 33))
+		self.assertEqual(cmd[1], "egrep")
+		self.assertEqual(cmd[2], "-i")
+		self.assertEqual(cmd[3], "> {}".format(hostname))
+		self.assertEqual(cmd[4], "--line-buffered")
+		self.assertEqual(cmd[5], "-B20")
+class getHostname_TestCase(unittest.TestCase):
+	"""
+	Test case for SnoopWithColors.Application.getHostName() method
+	"""
+	def setUp(self):
+		self.app = App()
+	def test_return_value(self):
+		import socket
+		hostname = socket.gethostname()
+		result = self.app.getHostname()
+		self.assertEqual(hostname, self.app.getHostname(), "Exepcted {} as hostname, but got {}".format(hostname, result))
+class parseArgs_TestCase(unittest.TestCase):
+	"""
+	Test case for SnoopWithColors.Application.parseArgs() method
+	"""
+	def setUp(self):
+		self.app = App()
 	def test_exceptions_handling(self):
 		"""
 		Test exception handling of SnoopWithColors.Application.parseArgs() method
@@ -60,5 +126,12 @@ class TestCase_parseArgs(unittest.TestCase):
 		
 		# restore the original command line arguments
 		sys.argv=argv
+class run_TestCase(unittest.TestCase):
+	"""
+	Test case for SnoopWithColors.Application.run() method
+	"""
+	def setUp(self):
+		self.app = App()
+	
 if __name__ == '__main__':
 	unittest.main()
