@@ -39,21 +39,32 @@ class init_TestCase(unittest.TestCase):
 		app = App(32, 33)
 		# verify values in command 2
 		cmd = app.cmds[1]
-		self.assertEqual(cmd[0], "GREP_COLORS='sl={}:mt={}'".format(32, 32))
+		self.assertEqual(cmd[0], 'GREP_COLORS=sl={}:mt={}'.format(32, 32))
 		self.assertEqual(cmd[1], "egrep")
 		self.assertEqual(cmd[2], "-i")
-		self.assertEqual(cmd[3], "> {}".format(hostname))
+		self.assertEqual(cmd[3], '"> {}"'.format(hostname))
 		self.assertEqual(cmd[4], "--line-buffered")
 		self.assertEqual(cmd[5], "-B20")
 		
 		# verify values in command 3
 		cmd = app.cmds[2]
-		self.assertEqual(cmd[0], "GREP_COLORS='sl={}:mt={}'".format(33, 33))
+		self.assertEqual(cmd[0], 'GREP_COLORS=sl={}:mt={}'.format(33, 33))
 		self.assertEqual(cmd[1], "egrep")
 		self.assertEqual(cmd[2], "-i")
-		self.assertEqual(cmd[3], "> {}".format(hostname))
+		self.assertEqual(cmd[3], '"IP {}"'.format(hostname))
 		self.assertEqual(cmd[4], "--line-buffered")
 		self.assertEqual(cmd[5], "-B20")
+class command_TestCase(unittest.TestCase):
+	def setUp(self):
+		self.app = App(31, 32)
+	def test_get_command(self):
+		host = self.app.getHostname()
+		expected = """tcpdump -i any | \
+GREP_COLORS=sl=31:mt=31 egrep -i "> {}" --line-buffered -B20 --color=always | \
+GREP_COLORS=sl=32:mt=32 egrep -i "IP {}" --line-buffered -B20 --color=always\
+""".format(host, host)
+		cmd = self.app.command
+		self.assertEqual(expected, cmd, "Expected:\n{}\nbut got:\n{}\n".format(expected, cmd))
 class getHostname_TestCase(unittest.TestCase):
 	"""
 	Test case for SnoopWithColors.Application.getHostName() method
@@ -132,6 +143,8 @@ class run_TestCase(unittest.TestCase):
 	"""
 	def setUp(self):
 		self.app = App()
+	
+		
 	
 if __name__ == '__main__':
 	unittest.main()

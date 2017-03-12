@@ -1,8 +1,9 @@
 #!/usr/bin/python
 
 import sys
+import time
 import socket
-from subprocess import Popen, PIPE
+import subprocess
 
 class Application(object):
     default_color1 = 31
@@ -11,8 +12,8 @@ class Application(object):
         hostname = self.getHostname()
         self.cmds = [
             ["tcpdump", "-i", "any"],
-            ["GREP_COLORS='sl={}:mt={}'".format(color1, color1), "egrep", "-i", "> {}".format(hostname), "--line-buffered", "-B20"],
-            ["GREP_COLORS='sl={}:mt={}'".format(color2, color2), "egrep", "-i", "> {}".format(hostname), "--line-buffered", "-B20"]
+            ["GREP_COLORS=sl={}:mt={}".format(color1, color1), "egrep", "-i", '"> {}"'.format(hostname), "--line-buffered", "-B20", "--color=always"],
+            ["GREP_COLORS=sl={}:mt={}".format(color2, color2), "egrep", '-i', '"IP {}"'.format(hostname), "--line-buffered", "-B20", "--color=always"]
         ]
     def getHostname(self):
         """
@@ -20,6 +21,7 @@ class Application(object):
         :return hostname: as a string
         """
         return str(socket.gethostname())
+    @classmethod
     def parseArgs(self):
         """
         Parse command line aguments into a dictionary and return it
@@ -32,37 +34,44 @@ class Application(object):
         for i in range(1, len(sys.argv)):
             myArgs.append(sys.argv[i])
         return myArgs
-    def run(self, args):
-        args = self.parseArgs()
-        
-        # color code for outbound communications
-        
-    
-        
-    
-    # tcpdump -i any | GREP_COLORS="\"$ICOLORS\"" egrep -i '> CodeHammer' --line-buffered -B20 | GREP_COLORS="\"$OCOLORS\"" egrep -i 'IP CodeHammer' --line-buffered -B20
-    # echo "command is: $OUTPUT"
-    # the following is a working example:
-    # sudo tcpdump -i any | GREP_COLORS="sl=31:mt=32" egrep -i '> CodeHammer' --line-buffered -B20 | GREP_COLORS="sl=32:mt=32" egrep -i 'IP CodeHammer' --line-buffered -B20
-    
-    def _call_on_command_line(self, cmd=[]):
+    @property
+    def command(self):
         """
-        Simulates executing a command via terminal, passing it command line arguments
-        Used only by this test case.
-        :param cmd: the command line and arguments as a []
-        :return stdout, stderr:
+        Formats a string to run on the command line.
+        :return cmd:
         """
-        p = Popen(cmd, stdout=PIPE, stderr=PIPE)
-        stdout, stderr = p.communicate()
-        return stdout, stderr
+        cmd = ''
+        i = 0
+        for command_str in self.cmds:
+            for part in command_str:
+                cmd += "{} ".format(part)
+            i += 1
+            cmd += "| " if i < len(self.cmds) else ""
+        cmd = cmd.strip()
+        return cmd
+    def run(self):
+        # get the command to run in a subprocess
+        cmd = self.command
+        print "Running command:\n{}\n".format(cmd)
+        
+        # run the command in a subprocess
+        p = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+        while True:
+            out = p.stderr.read(1)
+            if out == '' and p.poll() != None:
+                break
+            if out != '':
+                sys.stdout.write(out)
+                sys.stdout.flush()
     
 if __name__ == "__main__":
-    app = Application()
     try:
-        args = app.parseArgs()
+        args = Application.parseArgs()
     except RuntimeError as e:
-        app.printUsage()
-        exit(0)
+        # app.printUsage()
+        print "\nAn error occurred: {}\n".format(e.message)
+        raise e
     
-    app.run(args)
+    app = Application(color1=args[0], color2=args[1])
+    app.run()
         
