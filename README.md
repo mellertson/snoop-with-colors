@@ -1,8 +1,8 @@
 **Snoop with Color**<BR>
 <BR>
-This program uses 'tcpdump' and 'grep' to snoop for network traffic
-and colorizes its output using command line arguments, specified
-by the user.
+This program uses ```tcpdump``` to snoop for network traffic
+and colorizes its output using ```grep``` and color codes, provided
+on the command line by the user.
 <BR>
 <BR>
 
@@ -10,7 +10,7 @@ by the user.
 python Application.py <inbound_color_code> <outbound_color_code>
 
 **Example**<BR>
-The following example will colorize output from 'tcpdump' wiht outbound
+The following example will colorize output from 'tcpdump' with outbound
 traffic colored red, and inbound traffic colored blue.<BR>
 <BR>
 ```python Application.py 34 31```
