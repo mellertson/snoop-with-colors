@@ -50,6 +50,11 @@ class Application(object):
         cmd = cmd.strip()
         return cmd
     def run(self):
+        """
+        Runs the tcpdump command on the command line and colorizes output using color codes input
+        into the first two command line arguments.
+        :return:
+        """
         # get the command to run in a subprocess
         cmd = self.command
         print "Running command:\n{}\n".format(cmd)
