@@ -1,9 +1,11 @@
 from subprocess import Popen, PIPE
 
+
 class System(object):
 	"""
 	This class contains system call and system methods.
 	"""
+
 	def _callOnCommandLine(self, cmd=[]):
 		"""
 		Simulates executing a command via terminal, passing it command line arguments
@@ -14,3 +16,10 @@ class System(object):
 		p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE)
 		stdout, stderr = p.communicate()
 		return stdout, stderr
+
+
+
+
+
+
+

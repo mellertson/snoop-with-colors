@@ -2,6 +2,7 @@ import unittest
 import sys
 from snoop_with_colors.application import Application as App
 
+
 class init_TestCase(unittest.TestCase):
 	"""
 	Test case for SnoopWithColors.Application.__init__() method
@@ -20,23 +21,23 @@ class init_TestCase(unittest.TestCase):
 		
 		# verify values in command 2
 		cmd = self.app.cmds[1]
-		self.assertEqual(cmd[0], "GREP_COLORS='sl={}:mt={}'".format(App.default_color1, App.default_color1))
+		self.assertEqual(cmd[0], "GREP_COLORS=sl={}:mt={}".format(App.default_color1, App.default_color1))
 		self.assertEqual(cmd[1], "egrep")
 		self.assertEqual(cmd[2], "-i")
-		self.assertEqual(cmd[3], "> {}".format(hostname))
+		self.assertEqual(cmd[3], '"> {}"'.format(hostname))
 		self.assertEqual(cmd[4], "--line-buffered")
 		self.assertEqual(cmd[5], "-B20")
 		
 		# verify values in command 3
 		cmd = self.app.cmds[2]
-		self.assertEqual(cmd[0], "GREP_COLORS='sl={}:mt={}'".format(App.default_color2, App.default_color2))
+		self.assertEqual(cmd[0], "GREP_COLORS=sl={}:mt={}".format(App.default_color2, App.default_color2))
 		self.assertEqual(cmd[1], "egrep")
 		self.assertEqual(cmd[2], "-i")
-		self.assertEqual(cmd[3], "> {}".format(hostname))
+		self.assertEqual(cmd[3], '"IP {}"'.format(hostname))
 		self.assertEqual(cmd[4], "--line-buffered")
 		self.assertEqual(cmd[5], "-B20")
 
-	def test_default_return_values(self):
+	def test_default_return_values___using_different_color_codes(self):
 		hostname = self.app.getHostname()
 		app = App(32, 33)
 		# verify values in command 2
@@ -165,4 +166,6 @@ class run_TestCase(unittest.TestCase):
 	
 if __name__ == '__main__':
 	unittest.main()
+
+
 

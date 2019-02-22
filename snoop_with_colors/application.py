@@ -1,12 +1,13 @@
-#!/usr/bin/python
-
+#!/usr/bin/env
 import sys
 import socket
 import subprocess
 
+
 class Application(object):
     default_color1 = 31
     default_color2 = 32
+
     def __init__(self, color1=31, color2=32):
         hostname = self.getHostname()
         self.cmds = [
@@ -14,12 +15,14 @@ class Application(object):
             ["GREP_COLORS=sl={}:mt={}".format(color1, color1), "egrep", "-i", '"> {}"'.format(hostname), "--line-buffered", "-B20", "--color=always"],
             ["GREP_COLORS=sl={}:mt={}".format(color2, color2), "egrep", '-i', '"IP {}"'.format(hostname), "--line-buffered", "-B20", "--color=always"]
         ]
+
     def getHostname(self):
         """
         Gets the system's host name.
         :return hostname: as a string
         """
         return str(socket.gethostname())
+
     @classmethod
     def parseArgs(self):
         """
@@ -33,6 +36,7 @@ class Application(object):
         for i in range(1, len(sys.argv)):
             myArgs.append(sys.argv[i])
         return myArgs
+
     @property
     def command(self):
         """
@@ -48,6 +52,7 @@ class Application(object):
             cmd += "| " if i < len(self.cmds) else ""
         cmd = cmd.strip()
         return cmd
+
     def run(self):
         """
         Runs the tcpdump command on the command line and colorizes output using color codes input
@@ -67,7 +72,8 @@ class Application(object):
             if out != '':
                 sys.stdout.write(out)
                 sys.stdout.flush()
-    
+
+
 if __name__ == "__main__":
     try:
         args = Application.parseArgs()
@@ -80,3 +86,8 @@ if __name__ == "__main__":
     app.run()
         
 # TODO: Add capability to install using 'pip install snoop_with_colors'
+
+
+
+
+
