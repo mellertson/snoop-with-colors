@@ -1,6 +1,6 @@
 import unittest
 import sys
-from SnoopWithColors.Application import Application as App
+from snoop_with_colors.application import Application as App
 
 class init_TestCase(unittest.TestCase):
 	"""
@@ -8,6 +8,7 @@ class init_TestCase(unittest.TestCase):
 	"""
 	def setUp(self):
 		self.app = App()
+
 	def test_default_return_values(self):
 		hostname = self.app.getHostname()
 		
@@ -34,6 +35,7 @@ class init_TestCase(unittest.TestCase):
 		self.assertEqual(cmd[3], "> {}".format(hostname))
 		self.assertEqual(cmd[4], "--line-buffered")
 		self.assertEqual(cmd[5], "-B20")
+
 	def test_default_return_values(self):
 		hostname = self.app.getHostname()
 		app = App(32, 33)
@@ -54,9 +56,13 @@ class init_TestCase(unittest.TestCase):
 		self.assertEqual(cmd[3], '"IP {}"'.format(hostname))
 		self.assertEqual(cmd[4], "--line-buffered")
 		self.assertEqual(cmd[5], "-B20")
+
+
 class command_TestCase(unittest.TestCase):
+
 	def setUp(self):
 		self.app = App(31, 32)
+
 	def test_get_command(self):
 		host = self.app.getHostname()
 		expected = """tcpdump -i any | \
@@ -65,23 +71,31 @@ GREP_COLORS=sl=32:mt=32 egrep -i "IP {}" --line-buffered -B20 --color=always\
 """.format(host, host)
 		cmd = self.app.command
 		self.assertEqual(expected, cmd, "Expected:\n{}\nbut got:\n{}\n".format(expected, cmd))
+
+
 class getHostname_TestCase(unittest.TestCase):
 	"""
 	Test case for SnoopWithColors.Application.getHostName() method
 	"""
+
 	def setUp(self):
 		self.app = App()
+
 	def test_return_value(self):
 		import socket
 		hostname = socket.gethostname()
 		result = self.app.getHostname()
 		self.assertEqual(hostname, self.app.getHostname(), "Exepcted {} as hostname, but got {}".format(hostname, result))
+
+
 class parseArgs_TestCase(unittest.TestCase):
 	"""
 	Test case for SnoopWithColors.Application.parseArgs() method
 	"""
+
 	def setUp(self):
 		self.app = App()
+
 	def test_exceptions_handling(self):
 		"""
 		Test exception handling of SnoopWithColors.Application.parseArgs() method
@@ -116,6 +130,7 @@ class parseArgs_TestCase(unittest.TestCase):
 			
 		# restore the original command line arguments
 		sys.argv=argv
+
 	def test_return_value(self):
 		"""
 		Test the return value of SnoopWithColors.Application.parseArgs()
@@ -137,14 +152,17 @@ class parseArgs_TestCase(unittest.TestCase):
 		
 		# restore the original command line arguments
 		sys.argv=argv
+
+
 class run_TestCase(unittest.TestCase):
 	"""
 	Test case for SnoopWithColors.Application.run() method
 	"""
+
 	def setUp(self):
 		self.app = App()
-	
-		
+
 	
 if __name__ == '__main__':
 	unittest.main()
+

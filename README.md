@@ -27,6 +27,13 @@ can be specified as either of the command line arguments
 ![Image of foreground colors](https://github.com/mellertson/snoop-with-colors/blob/master/SnoopWithColors/images/foreground-colors.png)
 
 <BR>
-Note: For a full list of foreground, background and other color codes, I highly recommend
+
+**Note:** For a full list of foreground, background and other color codes, I highly recommend
 ![Flozz' MISC >> bash:tip_colors_and_formatting](http://misc.flogisoft.com/bash/tip_colors_and_formatting).
+
+<BR> 
+
+**Dependencies**
+
+- Python 2.7
 
