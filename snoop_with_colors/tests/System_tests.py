@@ -1,5 +1,5 @@
 import unittest
-from SnoopWithColors.System import System as Sys
+from snoop_with_colors.system import System as Sys
 
 class callOnCommandLine_TestCase(unittest.TestCase):
 	def setUp(self):
@@ -11,9 +11,5 @@ class callOnCommandLine_TestCase(unittest.TestCase):
 		self.assertEqual(len(result[0][1]), 0)
 		
 		
-		
-		
-
-
 if __name__ == '__main__':
 	unittest.main()
