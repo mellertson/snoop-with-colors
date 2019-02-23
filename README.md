@@ -1,8 +1,8 @@
 **Snoop with Color**<BR>
 <BR>
 This program uses ```tcpdump``` to snoop for network traffic
-and colorizes its output using ```grep``` and color codes, provided
-on the command line by the user.
+and colorizes its output using ```grep``` and user provided
+color codes on the command line.
 <BR>
 
 **Usage**<BR>
